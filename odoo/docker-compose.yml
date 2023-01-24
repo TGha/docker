@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+  myodoo:
+    image: odoo:${ODOO_VERSION}
+    volumes:
+      - "./config:/etc/odoo"
+      - "./project:/mnt/extra-addons"
+      - "${SHARE_FOLDER}/odoo${ODOO_VERSION}:/var/lib/odoo"
+    restart: always
+    command:
+      [
+        "sh",
+        "-c",
+        "pip3 install -r /etc/odoo/requirements.txt && python3 -m debugpy --listen 0.0.0.0:5679 /usr/bin/odoo -c /etc/odoo/odoo.conf"
+      ]
+    network_mode: "host"
